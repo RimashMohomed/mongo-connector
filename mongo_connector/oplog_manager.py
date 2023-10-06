@@ -565,12 +565,12 @@ class OplogThread(threading.Thread):
         """
         if not self.oplog_ns_set:
             curr = self.oplog.find().sort(
-                '$natural', pymongo.DESCENDING
+                'ts', pymongo.DESCENDING
             ).limit(-1)
         else:
             curr = self.oplog.find(
                 {'ns': {'$in': self.oplog_ns_set}}
-            ).sort('$natural', pymongo.DESCENDING).limit(-1)
+            ).sort('ts', pymongo.DESCENDING).limit(-1)
 
         if curr.count(with_limit_and_skip=True) == 0:
             return None
@@ -700,7 +700,7 @@ class OplogThread(threading.Thread):
         last_oplog_entry = util.retry_until_ok(
             self.oplog.find_one,
             {'ts': {'$lte': target_ts}},
-            sort=[('$natural', pymongo.DESCENDING)]
+            sort=[('ts', pymongo.DESCENDING)]
         )
 
         LOG.debug("OplogThread: last oplog entry is %s"

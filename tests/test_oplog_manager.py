@@ -106,7 +106,7 @@ class TestOplogManager(unittest.TestCase):
                 "i": i + 500
             })
         oplog = self.primary_conn["local"]["oplog.rs"]
-        oplog = oplog.find().sort("$natural", pymongo.DESCENDING).limit(-1)[0]
+        oplog = oplog.find().sort("ts", pymongo.DESCENDING).limit(-1)[0]
         self.assertEqual(self.opman.get_last_oplog_timestamp(),
                          oplog["ts"])
 

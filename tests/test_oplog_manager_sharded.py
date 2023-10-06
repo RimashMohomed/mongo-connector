@@ -234,9 +234,9 @@ class TestOplogManagerSharded(unittest.TestCase):
                 "i": i + 500
             })
         oplog1 = self.shard1_conn["local"]["oplog.rs"]
-        oplog1 = oplog1.find().sort("$natural", pymongo.DESCENDING).limit(-1)[0]
+        oplog1 = oplog1.find().sort("ts", pymongo.DESCENDING).limit(-1)[0]
         oplog2 = self.shard2_conn["local"]["oplog.rs"]
-        oplog2 = oplog2.find().sort("$natural", pymongo.DESCENDING).limit(-1)[0]
+        oplog2 = oplog2.find().sort("ts", pymongo.DESCENDING).limit(-1)[0]
         self.assertEqual(self.opman1.get_last_oplog_timestamp(),
                          oplog1["ts"])
         self.assertEqual(self.opman2.get_last_oplog_timestamp(),
